@@ -35,13 +35,17 @@ Customer.delete_all()
  customer2.update
  customer3.name = "Miss Lexi Cinemar-Goer"
  customer3.update
+ customer1.films() # retruns [ ] as could not afford
+ customer2.films() # returns @title="Bad Boys 37"
+
 
  film3.title = "Star Wars VIII: Advance screening 3D"
  film3.update
  film2.price = 20
  film2.update
 
- ticket1.films
+
+ ticket1.films # returns @id=6, @price=20, @title="Star Wars VIII: Advance screening 3D"
  ticket2.id
  ticket3.delete
 

@@ -11,12 +11,14 @@ class Ticket
     @film_id = options['film_id'].to_i
   end
 
+# Create
   def save()
     sql = "INSERT INTO tickets (customer_id, film_id) VALUES (#{@customer_id}, #{@film_id}) RETURNING *;"
     ticket = SqlRunner.run(sql).first
     @id = ticket['id'].to_i
   end
 
+# Read
   def self.all()
     sql = "SELECT * FROM tickets;"
     return Tickets.map_items(sql)
@@ -39,10 +41,18 @@ class Ticket
   end
 
   def films()
-    sql = "SELECT * FROM films where id = #{@film_id};"
+    sql = "SELECT * FROM films WHERE id = #{@film_id};"
     return Film.map_item(sql)
   end
 
+# Update
+def update
+  sql = "UPDATE tickets SET customer_id = '#{@customer_id}', film_id = '#{@film_id}' WHERE id = #{@id};"
+  SqlRunner.run(sql)
+  return nil
+end
+
+# Delete
   def delete()
     sql = "DELETE FROM tickets WHERE id = #{@id};"
     SqlRunner.run(sql)
