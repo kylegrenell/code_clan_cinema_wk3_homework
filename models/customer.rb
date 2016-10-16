@@ -38,7 +38,7 @@ class Customer
   end
 
   def films()
-    sql = "SELECT films.* FROM films INNER JOIN tickets ON tickets.film_id = films.id WHERE customer_id = #{id};"
+    sql = "SELECT f.* FROM films f INNER JOIN tickets t ON t.film_id = f.id WHERE customer_id = #{id};"
     return Film.map_items(sql)
   end
 
@@ -50,7 +50,7 @@ class Customer
   end
 
 # Delete
-def delete
+def delete()
   sql = "DELETE FROM customers WHERE id = #{@id};"
   SqlRunner.run(sql)
 end
@@ -60,5 +60,24 @@ def self.delete_all()
   SqlRunner.run(sql)
 end
 
+# extensions
+def purchase(film)
+  price = film.price
+  @funds -= price
+  Ticket.new({ 'customer_id' => @id, 'film_id' => film.id})
+end
+
+def customer_can_afford(film)
+  price = film.price
+  @funds >= price
+  Ticket.new({ 'customer_id' => @id, 'film_id' => film.id})
+end
+
+# Check how many tickets were bought by a customer
+def ticket_count()
+  sql = "SELECT * FROM tickets WHERE customer_id = #{@id};"
+  tickets = SqlRunner.run(sql)
+  return tickets.count
+end
 
 end

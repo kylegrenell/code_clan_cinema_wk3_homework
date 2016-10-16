@@ -59,4 +59,11 @@ def self.delete_all()
   SqlRunner.run(sql)
 end
 
+# Check how many customers are going to watch a certain film
+def customer_count
+ sql = "SELECT c.* FROM customers c INNER JOIN tickets t ON t.customer_id = c.id WHERE t.film_id = #{@id};"
+ customers = SqlRunner.run(sql)
+ return customers.count
+end
+
 end
